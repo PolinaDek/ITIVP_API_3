@@ -7,7 +7,7 @@ class ProductModel {
         $this->pdo = $pdo;
     }
 
-    // Получить все продукты
+
     public function getAll() {
         $query = "SELECT * FROM " . $this->table_name . " ORDER BY id DESC";
         $stmt = $this->pdo->prepare($query);
@@ -15,7 +15,7 @@ class ProductModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Получить один продукт по ID
+
     public function getById($id) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->pdo->prepare($query);
@@ -23,7 +23,7 @@ class ProductModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Создать новый продукт
+
     public function create($data) {
         $query = "
             INSERT INTO " . $this->table_name . " 
@@ -33,7 +33,7 @@ class ProductModel {
         
         $stmt = $this->pdo->prepare($query);
         
-        // Привязываем параметры
+
         $stmt->bindParam(':name', $data['name']);
         $stmt->bindParam(':description', $data['description']);
         $stmt->bindParam(':price', $data['price']);
@@ -46,7 +46,7 @@ class ProductModel {
         return false;
     }
 
-    // Обновить продукт
+
     public function update($id, $data) {
         $fields = [];
         $params = [':id' => $id];
@@ -82,14 +82,14 @@ class ProductModel {
         return $stmt->execute($params);
     }
 
-    // Удалить продукт
+
     public function delete($id) {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->pdo->prepare($query);
         return $stmt->execute([$id]);
     }
 
-    // Проверить существование продукта
+
     public function exists($id) {
         $query = "SELECT id FROM " . $this->table_name . " WHERE id = ?";
         $stmt = $this->pdo->prepare($query);
@@ -97,7 +97,7 @@ class ProductModel {
         return $stmt->fetch() !== false;
     }
 
-    // Валидация данных продукта
+
     public function validate($data, $forUpdate = false) {
         $errors = [];
 
@@ -116,4 +116,5 @@ class ProductModel {
         return $errors;
     }
 }
+
 ?>
