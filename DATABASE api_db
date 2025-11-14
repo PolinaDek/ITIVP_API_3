@@ -1,0 +1,25 @@
+
+CREATE DATABASE api_db;
+USE api_db;
+
+
+CREATE TABLE api_keys (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    api_key VARCHAR(255) UNIQUE NOT NULL,
+    user_id INT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO api_keys (api_key, user_id) VALUES ('test_key_12345', 1);
