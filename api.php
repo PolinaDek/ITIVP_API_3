@@ -1,5 +1,5 @@
 <?php
-// Полная версия API с поддержкой всех методов
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -15,22 +15,22 @@ try {
     $auth = new Auth($pdo);
     $productModel = new ProductModel($pdo);
     
-    // Проверяем аутентификацию для всех методов кроме OPTIONS
+  
     if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {
         if (!$auth->validateApiKey()) {
             exit;
         }
     }
     
-    // Получаем входные данные для POST/PUT
+
     $inputData = json_decode(file_get_contents("php://input"), true);
     
-    // Обрабатываем разные методы
+    
     $method = $_SERVER['REQUEST_METHOD'];
     
     switch ($method) {
         case 'GET':
-            // GET один продукт или все продукты
+       
             if (isset($_GET['id'])) {
                 $product = $productModel->getById($_GET['id']);
                 if ($product) {
@@ -46,21 +46,21 @@ try {
             break;
             
         case 'POST':
-            // POST создать продукт
+     
             if (!$inputData) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Invalid JSON data']);
                 break;
             }
             
-            // Валидация обязательных полей
+     
             if (empty($inputData['name']) || !isset($inputData['price'])) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Name and price are required']);
                 break;
             }
             
-            // Проверяем валидность цены
+   
             if (!is_numeric($inputData['price']) || $inputData['price'] < 0) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Price must be a positive number']);
@@ -82,7 +82,7 @@ try {
             break;
             
         case 'PUT':
-            // PUT обновить продукт
+      
             if (!$inputData) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Invalid JSON data']);
@@ -95,7 +95,7 @@ try {
                 break;
             }
             
-            // Проверяем существование продукта
+   
             if (!$productModel->exists($inputData['id'])) {
                 http_response_code(404);
                 echo json_encode(['error' => 'Product not found']);
@@ -114,14 +114,14 @@ try {
             break;
             
         case 'DELETE':
-            // DELETE удалить продукт
+ 
             if (!isset($_GET['id'])) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Product ID is required']);
                 break;
             }
             
-            // Проверяем существование продукта
+   
             if (!$productModel->exists($_GET['id'])) {
                 http_response_code(404);
                 echo json_encode(['error' => 'Product not found']);
@@ -137,7 +137,7 @@ try {
             break;
             
         case 'OPTIONS':
-            // Для CORS preflight запросов
+        
             http_response_code(200);
             break;
             
@@ -150,4 +150,5 @@ try {
     http_response_code(500);
     echo json_encode(['error' => 'Server error: ' . $e->getMessage()]);
 }
+
 ?>
